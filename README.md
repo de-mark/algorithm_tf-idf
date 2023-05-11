@@ -11,3 +11,14 @@ If a word appears frequently in a document, it's important (eg. 'python' showing
 
 When I tutor students, this algorithm pops up quite a bit, so it'd be helpful to have an example program on hand.
 
+## How this program works:
+
+This is a CLI application, so you'll have to clone the repository and run it from your computer.
+
+The program is set up to automatically read in all the text files from the `documents_to_read` folder and present you with the top TF-IDF for each document and then the overall most interesting topics.
+
+![Screenshot: Initial](./screenshots/initial_run.png)
+
+![Screenshot: Overall](./screenshots/overall.png)
+
+Note: This implementation of TF-IDF is purposefully basic: It's mostly meant for showing students how TF-IDF works.
