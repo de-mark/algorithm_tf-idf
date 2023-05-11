@@ -1,13 +1,15 @@
 # Using TextBlob, a Python library for processing text data
-#from textBlob import TextBlob
+from textblob import TextBlob
 import os
+import re
 import math
 
 TEXT_DIR = "documents_to_read"
 
 def read_in_txt_files():
-    # Blob is going to be an unformatted / no space String version of the orginal .txt file
+    # Blob is going to be a TextBlob version of the orginal .txt file
     blob_list = []
+    name_list = []
     
     for root, dirs, files in os.walk(TEXT_DIR):
         for name in files:
@@ -18,10 +20,11 @@ def read_in_txt_files():
                 this_file = ""
                 with open(file_path, 'r', encoding="UTF-8") as file_to_read:
                     for line in file_to_read:
-                        this_file += line.rstrip()
-                blob_list.append(this_file)
+                        this_file += line.rstrip().upper()
+                blob_list.append(TextBlob(re.sub(r'[^\w\s]', '', this_file)))
+                name_list.append(name)
                 print("   Successfully added", name)
-    return blob_list
+    return blob_list, name_list
            
 # Creates the TF score for TF-IDF
 # TF awards higher scores to words that have a higher frequency in the current document           
@@ -42,6 +45,13 @@ def idf(word, bloblist):
 def tf_idf(word, blob, bloblist):
     return tf(word, blob) * idf(word, bloblist)
 
+def merge_dict(dict1, dict2):
+    for key, val in dict2:
+        if key in dict1:
+            dict1[key] += val
+        else:
+            dict1[key] = val
+
 def main():
     print("=" * 20)
     print("TF-IDF EXAMPLE")
@@ -52,9 +62,37 @@ def main():
     print()
     
     # Once again, this is referred to as a blob instead of a document
-    # since it's just a string version of the original .txt
-    blob_list = read_in_txt_files()
+    # since it's just a TextBlob version of the original .txt
+    blob_list, name_list = read_in_txt_files()
+    all_scores = {}
     
+    for i, blob in enumerate(blob_list):
+        print(f">> READING DOCUMENT: {name_list[i]}")
+        scores = {word: tf_idf(word, blob, blob_list) for word in blob.words}
+        words_sorted_best = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+        words_sorted_worst = sorted(scores.items(), key=lambda x: x[1], reverse=False)
+        
+        print("    Top words:")
+        for word, score in words_sorted_best[:10]:
+            print(f"\t{word}: {score:.5f}")
+        
+        print()
+        
+        print("    Filtered words:")
+        for word, score in words_sorted_worst[:10]:
+            print(f"\t{word}: {score:.5f}")
+        
+        print()
+        
+        merge_dict(all_scores, words_sorted_best)
+    
+    print("=" * 20)
+    
+    all_scores = sorted(all_scores.items(), key=lambda x: x[1], reverse=True)
+    print("OVERALL TOP WORDS:")
+    
+    for word, score in all_scores[:20]:
+            print(f"\t{word}: {score:.5f}")
     
 
 main()

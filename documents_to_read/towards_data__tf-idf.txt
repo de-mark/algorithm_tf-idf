@@ -52,10 +52,6 @@ tf-idf(t, d) = tf(t, d) * log(N/(df + 1))
 5 -Implementing TF-IDF in Python From Scratch :
 To make TF-IDF from scratch in python,let’s imagine those two sentences from diffrent document :
 
-first_sentence : “Data Science is the sexiest job of the 21st century”.
-
-second_sentence : “machine learning is the key for data science”.
-
 First step we have to create the TF function to calculate total word frequency for all documents. Here are the codes below:
 
 first as usual we should import the necessary libraries :
@@ -74,7 +70,6 @@ total= set(first_sentence).union(set(second_sentence))
 print(total)
 Output :
 
-{'data', 'Science', 'job', 'sexiest', 'the', 'for', 'science', 'machine', 'of', 'is', 'learning', '21st', 'key', 'Data', 'century'}
 Now lets add a way to count the words using a dictionary key-value pairing for both sentences :
 
 wordDictA = dict.fromkeys(total, 0) 
@@ -84,6 +79,7 @@ for word in first_sentence:
     
 for word in second_sentence:
     wordDictB[word]+=1
+
 Now we put them in a dataframe and then view the result:
 
 pd.DataFrame([wordDictA, wordDictB])
@@ -110,7 +106,6 @@ nltk library has a method to download the stopwords, so instead of explicitly me
 
 those a sample of a stopwords in english language :
 
-
 and this is a simple code to download stop words and removing them .
 
 import nltk
@@ -121,7 +116,6 @@ filtered_sentence = [w for w in wordDictA if not w in stop_words]
 print(filtered_sentence)
 output :
 
-['data', 'Science', 'job', 'sexiest', 'science', 'machine', 'learning', '21st', 'key', 'Data', 'century']
 And now that we finished the TF section, we move onto the IDF part:
 
 def computeIDF(docList):
@@ -148,7 +142,6 @@ idfSecond = computeTFIDF(tfSecond, idfs)
 #putting it in a dataframe
 idf= pd.DataFrame([idfFirst, idfSecond])
 print(idf)
-output :
 
 
 That was a lot of work. But it is handy to know, if you are asked to code TF-IDF from scratch in the future. However, this can be done a lot simpler thanks to sklearn library. Let’s look at the example from them below:
@@ -156,8 +149,6 @@ That was a lot of work. But it is handy to know, if you are asked to code TF-IDF
 #first step is to import the library
 from sklearn.feature_extraction.text import TfidfVectorizer
 #for the sentence, make sure all words are lowercase or you will run #into error. for simplicity, I just made the same sentence all #lowercase
-firstV= "Data Science is the sexiest job of the 21st century"
-secondV= "machine learning is the key for data science"
 #calling the TfidfVectorizer
 vectorize= TfidfVectorizer()
 #fitting the model and passing our sentences right away:
