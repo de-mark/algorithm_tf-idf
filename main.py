@@ -6,7 +6,8 @@ import math
 TEXT_DIR = "documents_to_read"
 
 def read_in_txt_files():
-    doc_list = []
+    # Blob is going to be an unformatted / no space String version of the orginal .txt file
+    blob_list = []
     
     for root, dirs, files in os.walk(TEXT_DIR):
         for name in files:
@@ -18,10 +19,28 @@ def read_in_txt_files():
                 with open(file_path, 'r', encoding="UTF-8") as file_to_read:
                     for line in file_to_read:
                         this_file += line.rstrip()
-                doc_list.append(this_file)
+                blob_list.append(this_file)
                 print("   Successfully added", name)
-    return doc_list
-            
+    return blob_list
+           
+# Creates the TF score for TF-IDF
+# TF awards higher scores to words that have a higher frequency in the current document           
+def tf(word, blob):
+    return blob.words.count(word) / len(blob.words) 
+
+# Used by IDF to figure out how many of the provided documents have
+# this particular word
+def n_documents_containing_word(word, bloblist):
+    return sum(1 for blob in bloblist if word in blob.words)
+
+# IDF checks to see how many of the documents have this word to ensure
+# words like 'and' or 'the' are not given disproportionate importance
+def idf(word, bloblist):
+    return math.log(len(bloblist) / (1 + n_documents_containing_word(word, bloblist)))
+
+# Uses TF and IDF to generate the TF-IDF
+def tf_idf(word, blob, bloblist):
+    return tf(word, blob) * idf(word, bloblist)
 
 def main():
     print("=" * 20)
@@ -32,7 +51,9 @@ def main():
     print("Files must be (1) .txt and (2) UTF-8 encoded")
     print()
     
-    doc_list = read_in_txt_files()
+    # Once again, this is referred to as a blob instead of a document
+    # since it's just a string version of the original .txt
+    blob_list = read_in_txt_files()
     
     
 
