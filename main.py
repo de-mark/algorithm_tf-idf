@@ -45,6 +45,7 @@ def idf(word, bloblist):
 def tf_idf(word, blob, bloblist):
     return tf(word, blob) * idf(word, bloblist)
 
+# To combine [[word,imp]] with an overall dictionary
 def merge_dict(dict1, dict2):
     for key, val in dict2:
         if key in dict1:
@@ -52,6 +53,8 @@ def merge_dict(dict1, dict2):
         else:
             dict1[key] = val
 
+
+# Main program; runs at startup
 def main():
     print("=" * 20)
     print("TF-IDF EXAMPLE")
