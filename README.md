@@ -9,7 +9,7 @@ If a word appears frequently in a document, it's important (eg. 'python' showing
 
 ## Why Program it?
 
-When I tutor students, this algorithm pops up quite a bit, so it'd be helpful to have an example program on hand.
+Students often have questions about TF-IDF during Natural Language Processing tutoring sessions, so I wanted a simple example.
 
 ## How this program works:
 
