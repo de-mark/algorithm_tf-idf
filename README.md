@@ -19,6 +19,6 @@ The program is set up to automatically read in all the text files from the `docu
 
 ![Screenshot: Initial](./screenshots/initial_run.png)
 
-![Screenshot: Overall](./screenshots/overall.png)
+![Screenshot: Overall](./screenshots/overall_run.png)
 
 Note: This implementation of TF-IDF is purposefully basic: It's mostly meant for showing students how TF-IDF works.
